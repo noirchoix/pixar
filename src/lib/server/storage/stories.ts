@@ -2,6 +2,10 @@ import { env } from '$env/dynamic/private';
 import { writeJson } from '$lib/server/storage/fs';
 import type { FlowResponse, PersistedStory, ScriptResponse } from '$lib/types';
 
+function isProductionServerless() {
+  return !!env.NETLIFY;
+}
+
 export async function saveFlow(flow: FlowResponse): Promise<PersistedStory> {
   const record: PersistedStory = {
     id: flow.requestId,
@@ -10,7 +14,7 @@ export async function saveFlow(flow: FlowResponse): Promise<PersistedStory> {
     flow
   };
 
-  if (!env.NETLIFY) {
+  if (!isProductionServerless()) {
     await writeJson(['stories', `${flow.requestId}.json`], record);
   }
 
@@ -30,7 +34,7 @@ export async function saveScript(
     script
   };
 
-  if (!env.NETLIFY) {
+  if (!isProductionServerless()) {
     await writeJson(['stories', `${script.storyId}.json`], record);
   }
 

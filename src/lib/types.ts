@@ -1,11 +1,14 @@
-export type StoryCategory =
-  | 'emotional-family'
-  | 'whimsical-adventure'
-  | 'comedy'
-  | 'wonder'
-  | 'melancholy'
-  | 'mystery'
-  | 'horror-light';
+export const STORY_CATEGORIES = [
+  'emotional-family',
+  'whimsical-adventure',
+  'comedy',
+  'wonder',
+  'melancholy',
+  'mystery',
+  'horror-light'
+] as const;
+
+export type StoryCategory = (typeof STORY_CATEGORIES)[number];
 
 export type CategoryProfile = {
   key: StoryCategory;
@@ -96,5 +99,6 @@ export type PersistedStory = {
 
 export type ExportResponse = {
   fileName: string;
-  downloadUrl: string;
+  downloadUrl: string | null;
+  inlineContent?: string | null;
 };
