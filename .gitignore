@@ -30,7 +30,6 @@ yarn-error.log*
 
 # local database / generated data
 data/
-storage/
 generated/
 cache/
 tmp/
