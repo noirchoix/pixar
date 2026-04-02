@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
-import { env } from '$env/dynamic/private';
-import { writeText } from '$lib/server/storage/fs';
+import { writeText, isPersistentFilesystemDisabled } from '$lib/server/storage/fs';
+import type { ExportResponse } from '$lib/types';
 
 function slugify(value: string) {
   return value
@@ -10,11 +10,11 @@ function slugify(value: string) {
     .slice(0, 60);
 }
 
-export async function exportScriptTxt(topic: string, script: string) {
+export async function exportScriptTxt(topic: string, script: string): Promise<ExportResponse> {
   const safeName = slugify(topic) || 'story';
   const fileName = `${safeName}-${nanoid(6)}.txt`;
 
-  if (env.NETLIFY) {
+  if (isPersistentFilesystemDisabled()) {
     return {
       fileName,
       downloadUrl: null,

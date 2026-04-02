@@ -4,8 +4,17 @@ import { env } from '$env/dynamic/private';
 
 const DEFAULT_STORAGE_DIR = '.local';
 
-export function isNetlify() {
-  return !!env.NETLIFY;
+export function isServerlessRuntime() {
+  return (
+    env.NETLIFY === 'true' ||
+    !!env.AWS_LAMBDA_FUNCTION_NAME ||
+    !!env.LAMBDA_TASK_ROOT ||
+    !!env.NETLIFY_IMAGES_CDN_DOMAIN
+  );
+}
+
+export function isPersistentFilesystemDisabled() {
+  return isServerlessRuntime();
 }
 
 export function getStorageDir() {
@@ -13,8 +22,8 @@ export function getStorageDir() {
 }
 
 export async function ensureDir(...segments: string[]) {
-  if (isNetlify()) {
-    throw new Error('Filesystem persistence is disabled on Netlify production.');
+  if (isPersistentFilesystemDisabled()) {
+    throw new Error('Filesystem persistence is disabled in serverless production.');
   }
 
   const dir = path.join(getStorageDir(), ...segments);
@@ -23,7 +32,7 @@ export async function ensureDir(...segments: string[]) {
 }
 
 export async function writeJson<T>(segments: string[], value: T) {
-  if (isNetlify()) {
+  if (isPersistentFilesystemDisabled()) {
     return null;
   }
 
@@ -34,7 +43,7 @@ export async function writeJson<T>(segments: string[], value: T) {
 }
 
 export async function writeText(segments: string[], text: string) {
-  if (isNetlify()) {
+  if (isPersistentFilesystemDisabled()) {
     return null;
   }
 
