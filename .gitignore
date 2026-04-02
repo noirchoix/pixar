@@ -1,0 +1,63 @@
+# dependencies
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# build output
+.svelte-kit/
+build/
+dist/
+.vercel/
+.netlify/
+
+# environment files
+.env
+.env.*
+!.env.example
+
+# logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local database / generated data
+data/
+storage/
+generated/
+cache/
+tmp/
+*.sqlite
+*.sqlite3
+*.db
+
+# exported scripts
+exports/
+*.txt
+
+# test coverage
+coverage/
+.nyc_output/
+
+# editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+
+# package manager locks you do NOT use
+package-lock.json
+yarn.lock
+
+# if using pnpm keep this file
+!pnpm-lock.yaml
