@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { env } from '$env/dynamic/private';
 import { writeText } from '$lib/server/storage/fs';
 
 function slugify(value: string) {
@@ -12,9 +13,20 @@ function slugify(value: string) {
 export async function exportScriptTxt(topic: string, script: string) {
   const safeName = slugify(topic) || 'story';
   const fileName = `${safeName}-${nanoid(6)}.txt`;
+
+  if (env.NETLIFY) {
+    return {
+      fileName,
+      downloadUrl: null,
+      inlineContent: script
+    };
+  }
+
   await writeText(['exports', fileName], script);
+
   return {
     fileName,
-    downloadUrl: `/download/${fileName}`
+    downloadUrl: `/download/${fileName}`,
+    inlineContent: null
   };
 }
